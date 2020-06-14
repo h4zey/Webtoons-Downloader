@@ -13,7 +13,6 @@ class Webtoons(AbstractAsyncContextManager):
     def __init__(self, *, loop: Optional[asyncio.AbstractEventLoop]=None):
         self._session = aiohttp.ClientSession(
             loop=loop,
-            headers={"Referer": self.BASE_URL},
             cookies={"ageGatePass": True}
         )
 
@@ -25,10 +24,10 @@ class Webtoons(AbstractAsyncContextManager):
         soup = await self.soupify("GET", self.VIEWER_URL, params={"title_no": title, "episode_no": episode})
         return [img["data-url"] for img in soup("img", class_="_images")]
 
-    async def download(self, url: Union[int, str], episode: int, index: int) -> None:
+    async def download(self, url: str, episode: Union[int, str], index: Union[int, str]) -> None:
         loop = asyncio.get_event_loop()
         with open(f"{episode}_{index}.jpg", mode="wb") as f:
-            async with self._session.get(url) as response:
+            async with self._session.get(url, headers={"Referer": self.BASE_URL}) as response:
                 await loop.run_in_executor(None, f.write, await response.read())
 
     async def close(self) -> None:
