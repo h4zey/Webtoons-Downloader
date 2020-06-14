@@ -1,0 +1,6 @@
+aiohttp
+aiodns
+cchardet
+brotli
+lxml
+beautifulsoup4
