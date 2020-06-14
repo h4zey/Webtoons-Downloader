@@ -8,7 +8,7 @@ from contextlib import AbstractAsyncContextManager
 
 class Webtoons(AbstractAsyncContextManager):
     BASE_URL: str = "https://www.webtoons.com"
-    VIEWER_URL: str = "https://www.webtoons.com/_/_/_/_/viewer" # Cool 'hack'
+    VIEWER_URL: str = f"{BASE_URL}/_/_/_/_/viewer" # Cool 'hack'
 
     def __init__(self, *, loop: Optional[asyncio.AbstractEventLoop]=None):
         self._session = aiohttp.ClientSession(
