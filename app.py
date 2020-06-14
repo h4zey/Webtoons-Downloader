@@ -8,7 +8,7 @@ from contextlib import AbstractAsyncContextManager
 
 class Webtoons(AbstractAsyncContextManager):
     BASE_URL: str = "https://www.webtoons.com"
-    VIEWER_URL: str = "https://www.webtoons.com/_/_/_/_/viewer" # Cool #
+    VIEWER_URL: str = "https://www.webtoons.com/_/_/_/_/viewer" # Cool 'hack'
 
     def __init__(self, *, loop: Optional[asyncio.AbstractEventLoop]=None):
         self._session = aiohttp.ClientSession(
@@ -46,7 +46,6 @@ async def main():
         for episode in range(count):
             tasks = [webtoons.download(link, episode, index) for index, link in enumerate(await webtoons.image_links(title=title, episode=episode))]
             await asyncio.gather(*tasks)
-    
     print("Downloaded")
 
 if __name__ == "__main__":
